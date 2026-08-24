@@ -10,9 +10,9 @@ class RoleAndUserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Akun Admin
+        // 1. Akun Super Admin (Akses Full)
         User::updateOrCreate(
-            ['email' => 'admin@babulhasanah.sch.id'],
+            ['email' => 'superadmin@babulhasanah.sch.id'],
             [
                 'name' => 'Super Administrator',
                 'password' => Hash::make('password123'),
@@ -20,11 +20,21 @@ class RoleAndUserSeeder extends Seeder
             ]
         );
 
-        // Akun Wali Santri
+        // 2. Akun Admin / Pengurus (Akses Operasional Pesantren)
+        User::updateOrCreate(
+            ['email' => 'admin@babulhasanah.sch.id'],
+            [
+                'name' => 'Admin Pesantren',
+                'password' => Hash::make('password123'),
+                'role' => 'admin', // Role admin biasa
+            ]
+        );
+
+        // 3. Akun Wali Santri
         User::updateOrCreate(
             ['email' => 'walisantri@gmail.com'],
             [
-                'name' => 'Wali Santri Ahmad',
+                'name' => 'Ahmad Sofyan',
                 'password' => Hash::make('password123'),
                 'role' => 'wali_santri',
             ]

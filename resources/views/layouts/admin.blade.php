@@ -37,6 +37,11 @@
                         <i class="fa-solid fa-chart-pie w-5 text-sm"></i>
                         <span>Dashboard</span>
                     </a>
+                    <a href="{{ route('admin.pendaftaran.index') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl bg-emerald-600 text-white font-semibold text-xs transition shadow-lg shadow-emerald-900/50">
+                        <i class="fa-solid fa-user-plus w-5 text-sm"></i>
+                        <span>Pendaftaran</span>
+                    </a>
                     <!-- Tambah menu lainnya di sini -->
                 </div>
             </div>
@@ -61,7 +66,7 @@
                 class="h-20 bg-white border-b border-slate-200/80 flex items-center justify-between px-6 z-10 shadow-sm">
                 <h1 class="text-base sm:text-lg font-black text-slate-900">Panel Admin Pesantren</h1>
                 <div class="flex items-center gap-3">
-                    <span class="text-xs font-bold text-slate-900">Super Administrator</span>
+                    <span class="text-xs font-bold text-slate-900">{{ Auth::user()->name }}</span>
                 </div>
             </header>
 
