@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
+use App\Http\Controllers\Portal\PortalDashboardController as PortalDashboard;
 
 // ==========================================
 // 1. PUBLIC ROUTES (Halaman Depan & Pendaftaran)
@@ -22,7 +25,7 @@ Route::get('/berita', function () {
 })->name('berita.index');
 
 Route::get('/galeri', function () {
-    return view('pages.beranda');
+    return view('pages.galeri');
 })->name('galeri');
 
 Route::get('/kegiatan', function () {
@@ -35,30 +38,25 @@ Route::get('/pendaftaran', function () {
 
 
 // ==========================================
-// 2. AUTHENTICATION ROUTES (Placeholder)
+// 2. AUTHENTICATION ROUTES
 // ==========================================
-Route::get('/login', function () {
-    return "Halaman Login Multi-Role (Super Admin / Admin / Wali Santri)";
-})->name('login');
-
-
-// ==========================================
-// 3. ADMIN & SUPER ADMIN ROUTES (Protected)
-// ==========================================
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-        return "Dashboard Super Admin / Admin Pesantren";
-    })->name('dashboard');
-
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 });
 
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout')->middleware('auth');
+
+// ==========================================
+// 3. ADMIN ROUTES (Protected)
+// ==========================================
+Route::middleware(['auth', \App\Http\Middleware\RoleAdmin::class])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+});
 
 // ==========================================
 // 4. PORTAL WALI SANTRI ROUTES (Protected)
 // ==========================================
-Route::prefix('portal')->name('portal.')->group(function () {
-    Route::get('/dashboard', function () {
-        return "Dashboard Portal Wali Santri (Monitoring Anak)";
-    })->name('dashboard');
-
+Route::middleware(['auth', \App\Http\Middleware\RoleWaliSantri::class])->prefix('portal')->name('portal.')->group(function () {
+    Route::get('/dashboard', [PortalDashboard::class, 'index'])->name('dashboard');
 });

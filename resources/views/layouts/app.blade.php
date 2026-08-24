@@ -68,7 +68,7 @@
                     <a href="{{ url('/') }}" class="hover:text-emerald-600 transition">Beranda</a>
                     <a href="{{ url('/profil') }}" class="hover:text-emerald-600 transition">Profil</a>
                     <a href="{{ url('/program') }}" class="hover:text-emerald-600 transition">Program</a>
-                    <a href="{{ url('/informasi') }}" class="hover:text-emerald-600 transition">Informasi</a>
+                    <a href="{{ url('/berita') }}" class="hover:text-emerald-600 transition">Berita</a>
                     <a href="{{ url('/galeri') }}" class="hover:text-emerald-600 transition">Galeri</a>
                 </nav>
 
@@ -106,8 +106,8 @@
                 class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">Profil</a>
             <a href="{{ url('/program') }}"
                 class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">Program</a>
-            <a href="{{ url('/informasi') }}"
-                class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">Informasi</a>
+            <a href="{{ url('/berita') }}"
+                class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">Berita</a>
             <a href="{{ url('/galeri') }}"
                 class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 hover:bg-emerald-50 hover:text-emerald-600">Galeri</a>
 
