@@ -4,6 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\PendaftaranController as AdminPendaftaranController;
+use App\Http\Controllers\Admin\SantriController as AdminDataSantriController;
+use App\Http\Controllers\Admin\KontenController as AdminKontenController;
+use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
+use App\Http\Controllers\Admin\GaleriController as AdminGaleriController;
+use App\Http\Controllers\Admin\KegiatanController as AdminKegiatanController;
+use App\Http\Controllers\Admin\ImportExcelController as AdminImportExcelController;
 use App\Http\Controllers\Portal\PortalDashboardController as PortalDashboard;
 use App\Http\Controllers\Public\PendaftaranOnlineController;
 
@@ -65,6 +71,9 @@ Route::middleware(['auth', \App\Http\Middleware\RoleAdmin::class])->prefix('admi
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
     Route::get('/pendaftaran', [AdminPendaftaranController::class, 'index'])->name('pendaftaran.index');
     Route::patch('/pendaftaran/{id}', [AdminPendaftaranController::class, 'updateStatus'])->name('pendaftaran.update');
+    Route::get('/santri', [AdminDataSantriController::class, 'index'])->name('santri.index');
+    Route::get('/santri/{id}', [AdminDataSantriController::class, 'detail'])->name('santri.detail');
+    Route::get('/pengelolaan-konten', [AdminKontenController::class, 'index'])->name('konten.index');
 });
 
 // ==========================================

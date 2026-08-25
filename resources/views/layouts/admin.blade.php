@@ -73,6 +73,17 @@
                         <i class="fas fa-address-book w-5 text-sm"></i>
                         <span>Pendaftaran</span>
                     </a>
+                    <a href="{{ route('admin.santri.index') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('admin.santri.*') ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/50' : 'hover:bg-slate-800 text-slate-400' }} font-semibold text-xs transition">
+                        <i class="fa-solid fa-people-group w-5 text-sm"></i>
+                        <span>Data Santri</span>
+                    </a>
+                    <p class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">Pengelolaan</p>
+                    <a href="{{ route('admin.konten.index') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('admin.konten.*') ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/50' : 'hover:bg-slate-800 text-slate-400' }} font-semibold text-xs transition">
+                        <i class="fa-solid fa-blog w-5 text-sm"></i>
+                        <span>Konten</span>
+                    </a>
                 </div>
             </div>
 
@@ -89,7 +100,7 @@
         <div class="flex-1 flex flex-col overflow-hidden">
 
             <header
-                class="h-20 bg-[#cdd9cf] border-b border-slate-200/80 flex items-center justify-between px-4 sm:px-6 z-10 shadow-sm relative">
+                class="h-20 bg-white border-b border-slate-200/80 flex items-center justify-between px-4 sm:px-6 z-10 shadow-sm relative">
 
                 <!-- BAGIAN KIRI & TENGAH (MOBILE) -->
                 <div class="flex items-center gap-3">

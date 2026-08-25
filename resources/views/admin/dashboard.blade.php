@@ -108,6 +108,135 @@
 
         </div>
 
+        <!-- ========================================== -->
+        <!-- SECTION GRAFIK & DIAGRAM STATIS (BARU)       -->
+        <!-- ========================================== -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- GRAFIK GARIS (LINE CHART): TREN PENDAFTAR SANTRI BARU -->
+            <div
+                class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm lg:col-span-2 flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="text-sm font-black text-slate-900">Statistik Tren Pendaftar Santri</h3>
+                        <p class="text-[11px] text-slate-400">Grafik jumlah calon santri baru per bulan (Tahun Ajaran)</p>
+                    </div>
+                    <div
+                        class="bg-slate-50 border border-slate-200 text-slate-600 text-[11px] font-bold px-3 py-1.5 rounded-xl">
+                        <span>Periode 2025/2026</span>
+                    </div>
+                </div>
+
+                <!-- Ilustrasi / Kontainer Grafik Garis SVG Statis -->
+                <div class="py-4 relative">
+                    <!-- Garis Grid Horizontal Latar Belakang -->
+                    <div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-40">
+                        <div class="border-b border-dashed border-slate-200 w-full"></div>
+                        <div class="border-b border-dashed border-slate-200 w-full"></div>
+                        <div class="border-b border-dashed border-slate-200 w-full"></div>
+                        <div class="border-b border-dashed border-slate-200 w-full"></div>
+                    </div>
+
+                    <!-- SVG Line Chart -->
+                    <div class="h-56 w-full flex items-end relative z-10 px-2">
+                        <svg class="w-full h-full overflow-visible" viewBox="0 0 600 200" preserveAspectRatio="none">
+                            <!-- Area Gradient di bawah garis -->
+                            <defs>
+                                <linearGradient id="emeraldGradient" x1="0" y1="0" x2="0"
+                                    y2="1">
+                                    <stop offset="0%" stop-color="#10b981" stop-opacity="0.3" />
+                                    <stop offset="100%" stop-color="#10b981" stop-opacity="0.0" />
+                                </linearGradient>
+                            </defs>
+                            <!-- Area Fill -->
+                            <path d="M 0,150 Q 100,120 200,90 T 400,60 T 600,30 L 600,200 L 0,200 Z"
+                                fill="url(#emeraldGradient)" />
+                            <!-- Kurva Garis Utama -->
+                            <path d="M 0,150 Q 100,120 200,90 T 400,60 T 600,30" fill="none" stroke="#059669"
+                                stroke-width="3" stroke-linecap="round" />
+
+                            <!-- Titik Data (Nodes) -->
+                            <circle cx="0" cy="150" r="4" fill="#059669"
+                                class="transition-all hover:r-6 cursor-pointer" />
+                            <circle cx="120" cy="125" r="4" fill="#059669" />
+                            <circle cx="240" cy="95" r="4" fill="#059669" />
+                            <circle cx="360" cy="70" r="4" fill="#059669" />
+                            <circle cx="480" cy="45" r="4" fill="#059669" />
+                            <circle cx="600" cy="30" r="4" fill="#059669" />
+                        </svg>
+                    </div>
+
+                    <!-- Label Sumbu X (Bulan) -->
+                    <div
+                        class="grid grid-cols-6 text-center text-[10px] font-bold text-slate-400 mt-3 pt-2 border-t border-slate-100">
+                        <span>Nov</span>
+                        <span>Des</span>
+                        <span>Jan</span>
+                        <span>Feb</span>
+                        <span>Mar</span>
+                        <span>Apr</span>
+                    </div>
+                </div>
+
+                <!-- Keterangan Ringkas Bawah Grafik -->
+                <div class="flex items-center justify-between pt-3 border-t border-slate-100 text-xs">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-emerald-600 inline-block"></span>
+                        <span class="text-slate-600 font-semibold text-[11px]">Jumlah Pendaftar Masuk</span>
+                    </div>
+                    <span class="text-slate-900 font-black text-xs">Total Puncak: 42 Orang/Bulan</span>
+                </div>
+            </div>
+
+            <!-- DIAGRAM DONAT (DONUT CHART): KOMPOSISI DATA SANTRI -->
+            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col justify-between">
+                <div>
+                    <h3 class="text-sm font-black text-slate-900">Komposisi Santri Aktif</h3>
+                    <p class="text-[11px] text-slate-400">Distribusi berdasarkan tingkat jenjang pendidikan</p>
+                </div>
+
+                <!-- Ilustrasi Diagram Donat / Progress Bar Kontras -->
+                <div class="my-6 flex flex-col items-center justify-center">
+                    <!-- Visualisasi Donat Lingkaran Statis Menggunakan CSS Conic Gradient -->
+                    <div class="relative w-36 h-36 rounded-full flex items-center justify-center shadow-inner"
+                        style="background: conic-gradient(#059669 0% 50%, #3b82f6 50% 80%, #f59e0b 80% 100%);">
+                        <!-- Lubang Tengah Donat -->
+                        <div class="w-24 h-24 bg-white rounded-full flex flex-col items-center justify-center shadow-sm">
+                            <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Total</span>
+                            <span class="text-base font-black text-slate-900">324</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Legenda Keterangan Donat -->
+                <div class="space-y-2 pt-2 border-t border-slate-100 text-xs">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                            <span class="text-slate-600 font-medium text-[11px]">Tingkat Ula / TPQ</span>
+                        </div>
+                        <span class="font-bold text-slate-900 text-[11px]">50% (162)</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                            <span class="text-slate-600 font-medium text-[11px]">Tingkat Wustha / Tsanawiyah</span>
+                        </div>
+                        <span class="font-bold text-slate-900 text-[11px]">30% (97)</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                            <span class="text-slate-600 font-medium text-[11px]">Tingkat Ulya / Aliyah</span>
+                        </div>
+                        <span class="font-bold text-slate-900 text-[11px]">20% (65)</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- ========================================== -->
+
         <!-- GRID SEKSI BAWAH -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
@@ -129,7 +258,8 @@
                 <!-- TAMPILAN MOBILE: LIST CARD (Muncul di layar kecil) -->
                 <div class="space-y-3 sm:hidden">
                     <!-- Item 1 -->
-                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/60 flex items-center justify-between">
+                    <div
+                        class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/60 flex items-center justify-between">
                         <div class="space-y-0.5">
                             <span class="text-[9px] font-bold text-slate-400">PPDB-2026-001</span>
                             <h4 class="text-xs font-black text-slate-900">Muhammad Al Fatih</h4>
@@ -141,7 +271,8 @@
                     </div>
 
                     <!-- Item 2 -->
-                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/60 flex items-center justify-between">
+                    <div
+                        class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/60 flex items-center justify-between">
                         <div class="space-y-0.5">
                             <span class="text-[9px] font-bold text-slate-400">PPDB-2026-002</span>
                             <h4 class="text-xs font-black text-slate-900">Fatimah Az Zahra</h4>
@@ -153,7 +284,8 @@
                     </div>
 
                     <!-- Item 3 -->
-                    <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/60 flex items-center justify-between">
+                    <div
+                        class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/60 flex items-center justify-between">
                         <div class="space-y-0.5">
                             <span class="text-[9px] font-bold text-slate-400">PPDB-2026-003</span>
                             <h4 class="text-xs font-black text-slate-900">Umar Faruq</h4>
