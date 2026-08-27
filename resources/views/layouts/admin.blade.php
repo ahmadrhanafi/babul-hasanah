@@ -84,6 +84,26 @@
                         <i class="fa-solid fa-blog w-5 text-sm"></i>
                         <span>Konten</span>
                     </a>
+                    <a href="{{ route('admin.program.index') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('admin.program.*') ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/50' : 'hover:bg-slate-800 text-slate-400' }} font-semibold text-xs transition">
+                        <i class="fa-solid fa-folder-tree w-5 text-sm"></i>
+                        <span>Program</span>
+                    </a>
+                    <a href="{{ route('admin.berita.index') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('admin.berita.*') ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/50' : 'hover:bg-slate-800 text-slate-400' }} font-semibold text-xs transition">
+                        <i class="fa-solid fa-newspaper w-5 text-sm"></i>
+                        <span>Berita</span>
+                    </a>
+                    <a href="{{ route('admin.kegiatan.index') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('admin.kegiatan.*') ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/50' : 'hover:bg-slate-800 text-slate-400' }} font-semibold text-xs transition">
+                        <i class="fa-solid fa-calendar-plus w-5 text-sm"></i>
+                        <span>Kegiatan</span>
+                    </a>
+                    <a href="{{ route('admin.galeri.index') }}"
+                        class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->routeIs('admin.galeri.*') ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-900/50' : 'hover:bg-slate-800 text-slate-400' }} font-semibold text-xs transition">
+                        <i class="fa-solid fa-photo-film w-5 text-sm"></i>
+                        <span>Galeri</span>
+                    </a>
                 </div>
             </div>
 

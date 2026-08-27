@@ -6,9 +6,10 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\PendaftaranController as AdminPendaftaranController;
 use App\Http\Controllers\Admin\SantriController as AdminDataSantriController;
 use App\Http\Controllers\Admin\KontenController as AdminKontenController;
+use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
+use App\Http\Controllers\Admin\KegiatanController as AdminKegiatanController;
 use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
 use App\Http\Controllers\Admin\GaleriController as AdminGaleriController;
-use App\Http\Controllers\Admin\KegiatanController as AdminKegiatanController;
 use App\Http\Controllers\Admin\ImportExcelController as AdminImportExcelController;
 use App\Http\Controllers\Portal\PortalDashboardController as PortalDashboard;
 use App\Http\Controllers\Public\PendaftaranOnlineController;
@@ -74,6 +75,10 @@ Route::middleware(['auth', \App\Http\Middleware\RoleAdmin::class])->prefix('admi
     Route::get('/santri', [AdminDataSantriController::class, 'index'])->name('santri.index');
     Route::get('/santri/{id}', [AdminDataSantriController::class, 'detail'])->name('santri.detail');
     Route::get('/pengelolaan-konten', [AdminKontenController::class, 'index'])->name('konten.index');
+    Route::get('/pengelolaan-program', [AdminProgramController::class, 'index'])->name('program.index');
+    Route::get('/pengelolaan-kegiatan', [AdminKegiatanController::class, 'index'])->name('kegiatan.index');
+    Route::get('/pengelolaan-berita', [AdminBeritaController::class, 'index'])->name('berita.index');
+    Route::get('/pengelolaan galeri', [AdminGaleriController::class, 'index'])->name('galeri.index');
 });
 
 // ==========================================
