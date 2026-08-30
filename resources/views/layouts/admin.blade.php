@@ -41,12 +41,40 @@
         [x-cloak] {
             display: none !important;
         }
+
+        /* --- CUSTOM SCROLLBAR --- */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: rgba(203, 213, 225, 0.6);
+            border-radius: 9999px;
+            transition: background-color 0.2s ease;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(148, 163, 184, 0.9);
+        }
+
+        /* Dark Mode Scrollbar */
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: rgba(51, 65, 85, 0.7);
+        }
+
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(71, 85, 105, 1);
+        }
     </style>
 </head>
 
-<body
-    class="bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased transition-colors duration-300"
-    x-data="{ sidebarOpen: false, logoutModalOpen: false }">
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased"
+    x-data="{ sidebarOpen: false, sidebarMinimize: false, logoutModalOpen: false }">
 
     <div class="flex h-screen overflow-hidden">
 
@@ -95,9 +123,9 @@
                 </div>
             </div>
 
-            <!-- MAIN CONTENT -->
+            <!-- MAIN CONTENT (Ditambahkan kelas custom-scrollbar) -->
             <main
-                class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-100 dark:bg-slate-950 p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 transition-colors duration-300">
+                class="flex-1 overflow-x-hidden overflow-y-auto custom-scrollbar bg-slate-100 dark:bg-slate-950 p-4 sm:p-6 lg:p-8 pb-24 md:pb-8 transition-colors duration-300">
                 @yield('content')
             </main>
 
