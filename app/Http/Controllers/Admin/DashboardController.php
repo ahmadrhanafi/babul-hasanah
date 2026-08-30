@@ -4,26 +4,21 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-// use App\Models\Santri;
-// use App\Models\PendaftaranOnline;
-// use App\Models\InformasiPesantren;
+use App\Models\PendaftaranOnline;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Nanti bisa diubah mengambil data asli dari database, contoh:
-        // $totalSantri = Santri::count();
-        // $totalPendaftar = PendaftaranOnline::count();
-
-        // Untuk sementara kita kirim data dummy / placeholder yang rapi:
         $data = [
             'totalSantri' => 485,
-            'totalPendaftar' => 124,
+            'totalPendaftar' => PendaftaranOnline::count(), // Dibuat dinamis
             'totalBerita' => 38,
             'totalAsatidz' => 32,
+            // Ambil 5 data pendaftar terbaru berdasarkan yang paling baru dibuat
+            'pendaftarTerbaru' => PendaftaranOnline::latest()->take(5)->get(),
         ];
 
-        return view('admin.dashboard', $data);
+        return view('dashboard.index', $data);
     }
 }

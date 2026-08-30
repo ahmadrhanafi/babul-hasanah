@@ -74,7 +74,12 @@ Route::middleware(['auth', \App\Http\Middleware\RoleAdmin::class])->prefix('admi
     Route::patch('/pendaftaran/{id}', [AdminPendaftaranController::class, 'updateStatus'])->name('pendaftaran.update');
     Route::get('/santri', [AdminDataSantriController::class, 'index'])->name('santri.index');
     Route::get('/santri/{id}', [AdminDataSantriController::class, 'detail'])->name('santri.detail');
+    // Konten
     Route::get('/pengelolaan-konten', [AdminKontenController::class, 'index'])->name('konten.index');
+    Route::put('/konten/update', [AdminKontenController::class, 'updateProfil'])->name('konten.update');
+    // Pengurus
+    Route::post('/pengurus', [App\Http\Controllers\Admin\KontenController::class, 'storeKepengurusan'])->name('pengurus.store');
+    Route::delete('/pengurus/{id}', [App\Http\Controllers\Admin\KontenController::class, 'destroyKepengurusan'])->name('pengurus.destroy');
     Route::get('/pengelolaan-program', [AdminProgramController::class, 'index'])->name('program.index');
     Route::get('/pengelolaan-kegiatan', [AdminKegiatanController::class, 'index'])->name('kegiatan.index');
     Route::get('/pengelolaan-berita', [AdminBeritaController::class, 'index'])->name('berita.index');

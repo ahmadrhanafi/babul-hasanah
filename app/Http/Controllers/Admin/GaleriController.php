@@ -12,6 +12,6 @@ class GaleriController extends Controller
         $data = [
         ];
 
-        return view('admin.galeri.index', $data);
+        return view('dashboard.galeri.index', $data);
     }
 }

@@ -15,7 +15,7 @@ class PendaftaranController extends Controller
     public function index()
     {
         $pendaftar = PendaftaranOnline::latest()->get();
-        return view('admin.pendaftaran.index', compact('pendaftar'));
+        return view('dashboard.pendaftaran.index', compact('pendaftar'));
     }
 
     public function updateStatus(Request $request, $id)

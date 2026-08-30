@@ -12,6 +12,6 @@ class ProgramController extends Controller
         $data = [
         ];
 
-        return view('admin.program.index', $data);
+        return view('dashboard.program.index', $data);
     }
 }

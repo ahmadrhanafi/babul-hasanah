@@ -12,6 +12,6 @@ class KegiatanController extends Controller
         $data = [
         ];
 
-        return view('admin.kegiatan.index', $data);
+        return view('dashboard.kegiatan.index', $data);
     }
 }
