@@ -124,9 +124,16 @@ Route::middleware(['auth', \App\Http\Middleware\RoleAdmin::class])->prefix('admi
     // Pengurus
     Route::post('/pengurus', [App\Http\Controllers\Admin\KontenController::class, 'storeKepengurusan'])->name('pengurus.store');
     Route::delete('/pengurus/{id}', [App\Http\Controllers\Admin\KontenController::class, 'destroyKepengurusan'])->name('pengurus.destroy');
+    // Konten
     Route::get('/pengelolaan-program', [AdminProgramController::class, 'index'])->name('program.index');
+    // Kegiatan
     Route::get('/pengelolaan-kegiatan', [AdminKegiatanController::class, 'index'])->name('kegiatan.index');
+    Route::post('/kegiatan', [AdminKegiatanController::class, 'store'])->name('kegiatan.store');
+    Route::get('/kegiatan/{kegiatan}/absensi', [AdminKegiatanController::class, 'showAbsensi'])->name('kegiatan.absensi');
+    Route::post('/kegiatan/{kegiatan}/absensi', [AdminKegiatanController::class, 'storeAbsensi'])->name('kegiatan.absensi.store');
+    // Berita
     Route::get('/pengelolaan-berita', [AdminBeritaController::class, 'index'])->name('berita.index');
+    // Galeri
     Route::get('/pengelolaan galeri', [AdminGaleriController::class, 'index'])->name('galeri.index');
 });
 

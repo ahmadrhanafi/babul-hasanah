@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,15 +13,21 @@ class Absensi extends Model
 
     protected $fillable = [
         'santri_id',
-        'jenis_kegiatan',
-        'keterangan',
+        'kegiatan_id',
         'status_kehadiran',
+        'keterangan',
         'tanggal',
     ];
 
-    // Relasi balik ke santri
+    // Relasi ke data santri
     public function santri()
     {
         return $this->belongsTo(Santri::class, 'santri_id');
+    }
+
+    // Relasi ke master kegiatan
+    public function kegiatan()
+    {
+        return $this->belongsTo(Kegiatan::class, 'kegiatan_id');
     }
 }

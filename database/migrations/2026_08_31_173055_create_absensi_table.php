@@ -10,9 +10,9 @@ return new class extends Migration {
         Schema::create('absensi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('santri_id')->constrained('santri')->onDelete('cascade');
-            $table->string('jenis_kegiatan'); // Contoh: Sholat Berjamaah, Tahfidz, Sekolah Formal
-            $table->text('keterangan')->nullable();
+            $table->foreignId('kegiatan_id')->constrained('kegiatan')->onDelete('cascade'); // Menghubungkan ke tabel kegiatan
             $table->enum('status_kehadiran', ['hadir', 'izin', 'sakit', 'alpa'])->default('hadir');
+            $table->text('keterangan')->nullable();
             $table->date('tanggal');
             $table->timestamps();
         });
