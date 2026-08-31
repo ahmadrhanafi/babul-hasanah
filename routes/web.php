@@ -70,10 +70,14 @@ Route::middleware(['auth', \App\Http\Middleware\RoleSuperAdmin::class])->prefix(
 // ==========================================
 Route::middleware(['auth', \App\Http\Middleware\RoleAdmin::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+    // Pendaftaran
     Route::get('/pendaftaran', [AdminPendaftaranController::class, 'index'])->name('pendaftaran.index');
     Route::patch('/pendaftaran/{id}', [AdminPendaftaranController::class, 'updateStatus'])->name('pendaftaran.update');
+    // Santri
     Route::get('/santri', [AdminDataSantriController::class, 'index'])->name('santri.index');
     Route::get('/santri/{id}', [AdminDataSantriController::class, 'detail'])->name('santri.detail');
+    Route::post('/santri/import', [AdminDataSantriController::class, 'import'])->name('santri.import');
+    Route::get('/santri/template', [AdminDataSantriController::class, 'downloadTemplate'])->name('santri.template');
     // Konten
     Route::get('/pengelolaan-konten', [AdminKontenController::class, 'index'])->name('konten.index');
     Route::put('/konten/update', [AdminKontenController::class, 'updateProfil'])->name('konten.update');

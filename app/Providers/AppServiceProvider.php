@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Jika web diakses lewat alamat yang mengandung kata 'ngrok'
+        if (str_contains(request()->getHttpHost(), 'ngrok-free.dev') || str_contains(request()->getHttpHost(), 'ngrok.io')) {
+            URL::forceScheme('https');
+        }
     }
 }

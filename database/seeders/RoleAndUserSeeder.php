@@ -15,7 +15,7 @@ class RoleAndUserSeeder extends Seeder
             ['email' => 'superadmin@babulhasanah.sch.id'],
             [
                 'name' => 'Super Administrator',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('babul2026'),
                 'role' => 'super_admin',
             ]
         );
@@ -25,7 +25,7 @@ class RoleAndUserSeeder extends Seeder
             ['email' => 'admin@babulhasanah.sch.id'],
             [
                 'name' => 'Admin Pesantren',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('babul2026'),
                 'role' => 'admin', // Role admin biasa
             ]
         );
@@ -35,7 +35,7 @@ class RoleAndUserSeeder extends Seeder
             ['email' => 'walisantri@gmail.com'],
             [
                 'name' => 'Ahmad Sofyan',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('babul2026'),
                 'role' => 'wali_santri',
             ]
         );
