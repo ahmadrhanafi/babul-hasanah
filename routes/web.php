@@ -15,8 +15,10 @@ use App\Http\Controllers\Portal\PortalDashboardController as PortalDashboard;
 use App\Http\Controllers\Public\PendaftaranOnlineController;
 
 use Laravel\Socialite\Facades\Socialite;
-use App\Models\User;
+use Laravel\Socialite\Two\AbstractProvider;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use App\Models\User;
 
 // ==========================================
 // LOGIN GOOGLE AUTH ROUTES
@@ -28,24 +30,32 @@ Route::get('/auth/google', function () {
 
 Route::get('/auth/google/callback', function () {
     try {
-        $googleUser = Socialite::driver('google')->user();
-
-        $user = User::where('email', $googleUser->getEmail())->first();
-
-        if (!$user) {
-            return redirect()->route('login')->withErrors(['email' => 'Email Anda belum terdaftar atau belum diverifikasi oleh admin pesantren.']);
-        }
-
-        Auth::login($user);
-
-        return redirect()->intended('dashboard');
+        /** @var AbstractProvider $driver */
+        $driver = Socialite::driver('google');
+        $googleUser = $driver->stateless()->user();
     } catch (\Exception $e) {
-        return redirect()->route('login')->withErrors(['email' => 'Gagal login dengan Google. Silakan coba lagi.']);
+        Log::error('Google Auth Error: ' . $e->getMessage());
+
+        return redirect()->route('login')->withErrors([
+            'email' => 'Gagal terhubung dengan sistem Google. Silakan coba beberapa saat lagi atau gunakan email & password.'
+        ]);
     }
+
+    $user = User::where('email', $googleUser->getEmail())->first();
+
+    if (!$user) {
+        return redirect()->route('login')->withErrors([
+            'email' => 'Email Anda (' . $googleUser->getEmail() . ') belum terdaftar atau belum diverifikasi oleh admin pesantren.'
+        ]);
+    }
+
+    Auth::login($user);
+
+    return redirect()->intended('dashboard');
 });
 
 // ==========================================
-// 1. PUBLIC ROUTES (Halaman Depan & Pendaftaran)
+// 1. PUBLIC ROUTES (Halaman Web & Form Pendaftaran)
 // ==========================================
 Route::get('/', function () {
     return view('pages.beranda');
