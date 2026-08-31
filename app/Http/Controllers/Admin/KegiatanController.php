@@ -7,14 +7,22 @@ use App\Models\Kegiatan;
 use App\Models\Absensi;
 use App\Models\Santri;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class KegiatanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kegiatan = Kegiatan::withCount('absensi')->latest()->get();
+        // Ambil tanggal dari request, jika kosong default ke hari ini
+        $tanggal = $request->input('tanggal', Carbon::today()->toDateString());
 
-        return view('dashboard.kegiatan.index', compact('kegiatan'));
+        // Ambil kegiatan berdasarkan tanggal yang dipilih
+        $kegiatan = Kegiatan::withCount('absensi')
+            ->whereDate('tanggal', $tanggal)
+            ->orderBy('waktu_mulai', 'asc')
+            ->get();
+
+        return view('dashboard.kegiatan.index', compact('kegiatan', 'tanggal'));
     }
 
     public function store(Request $request)
@@ -27,10 +35,10 @@ class KegiatanController extends Controller
 
         Kegiatan::create($request->all());
 
-        return redirect()->route('admin.kegiatan.index')->with('success', 'Kegiatan pesantren berhasil ditambahkan.');
+        return redirect()->route('admin.kegiatan.index', ['tanggal' => $request->tanggal])
+            ->with('success', 'Kegiatan pesantren berhasil ditambahkan.');
     }
 
-    // Halaman kelola absensi per kegiatan
     public function showAbsensi(Kegiatan $kegiatan)
     {
         $santri = Santri::all();
@@ -39,7 +47,6 @@ class KegiatanController extends Controller
         return view('dashboard.kegiatan.absensi', compact('kegiatan', 'santri', 'absensiList'));
     }
 
-    // Simpan atau update absensi santri secara massal
     public function storeAbsensi(Request $request, Kegiatan $kegiatan)
     {
         $request->validate([

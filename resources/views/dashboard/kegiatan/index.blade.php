@@ -10,7 +10,13 @@
                 <p class="text-xs text-slate-500 dark:text-slate-400">Kelola jadwal kegiatan dan pemantauan absensi harian
                     santri.</p>
             </div>
-            <div>
+            <div class="flex items-center gap-2">
+                <!-- Tombol ke Master Jadwal Rutin -->
+                <a href="{{ route('admin.jadwal-rutin.index') }}"
+                    class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-calendar-days"></i> Atur Jadwal Rutin
+                </a>
+                <!-- Tombol Tambah Kegiatan Insidentil -->
                 <button onclick="document.getElementById('modalTambahKegiatan').classList.remove('hidden')"
                     class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-2 shadow-sm">
                     <i class="fa-solid fa-plus"></i> Tambah Kegiatan
@@ -25,6 +31,22 @@
             </div>
         @endif
 
+        <!-- Filter Berdasarkan Tanggal -->
+        <div
+            class="bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center justify-between">
+            <form method="GET" action="{{ route('admin.kegiatan.index') }}"
+                class="flex items-center gap-3 w-full sm:w-auto">
+                <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Pilih Tanggal:</label>
+                <input type="date" name="tanggal" value="{{ $tanggal }}" onchange="this.form.submit()"
+                    class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-emerald-600 outline-none">
+            </form>
+            <div class="text-xs font-bold text-slate-500 hidden sm:block">
+                Menampilkan kegiatan tanggal: <span
+                    class="text-emerald-600 dark:text-emerald-400">{{ \Carbon\Carbon::parse($tanggal)->format('d M Y') }}</span>
+            </div>
+        </div>
+
+        <!-- Tabel Kegiatan -->
         <div
             class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm overflow-hidden transition-colors duration-300">
             <div class="overflow-x-auto custom-scrollbar">
@@ -35,7 +57,7 @@
                             <th class="py-3 px-6 font-extrabold">No</th>
                             <th class="py-3 px-6 font-extrabold">Nama Kegiatan</th>
                             <th class="py-3 px-6 font-extrabold">Kategori</th>
-                            <th class="py-3 px-6 font-extrabold">Tanggal & Waktu</th>
+                            <th class="py-3 px-6 font-extrabold">Waktu</th>
                             <th class="py-3 px-6 font-extrabold text-center">Absensi Tercatat</th>
                             <th class="py-3 px-6 font-extrabold text-right">Aksi</th>
                         </tr>
@@ -54,10 +76,10 @@
                                     </span>
                                 </td>
                                 <td class="py-4 px-6 text-slate-500 dark:text-slate-400">
-                                    {{ \Carbon\Carbon::parse($item->tanggal)->format('d M Y') }}
                                     @if ($item->waktu_mulai)
-                                        <span class="block text-[10px] text-slate-400">({{ $item->waktu_mulai }} -
-                                            {{ $item->waktu_selesai ?? 'Selesai' }})</span>
+                                        {{ $item->waktu_mulai }} - {{ $item->waktu_selesai ?? 'Selesai' }}
+                                    @else
+                                        <span class="italic text-slate-400">Sepanjang hari</span>
                                     @endif
                                 </td>
                                 <td class="py-4 px-6 text-center font-bold text-emerald-600 dark:text-emerald-400">
@@ -72,8 +94,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="py-8 text-center text-slate-400 text-xs">Belum ada data kegiatan
-                                    pesantren.</td>
+                                <td colspan="6" class="py-8 text-center text-slate-400 text-xs">Tidak ada jadwal kegiatan
+                                    pada tanggal ini.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -82,17 +104,17 @@
         </div>
     </div>
 
-    <!-- Modal Tambah Kegiatan -->
+    <!-- Modal Tambah Kegiatan (Insidentil) -->
     <div id="modalTambahKegiatan"
         class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50">
         <div
             class="bg-white dark:bg-slate-900 rounded-3xl max-w-lg w-full p-6 shadow-xl border border-slate-100 dark:border-slate-800">
-            <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4">Tambah Kegiatan Baru</h3>
+            <h3 class="text-base font-bold text-slate-900 dark:text-white mb-4">Tambah Kegiatan Khusus / Insidentil</h3>
             <form action="{{ route('admin.kegiatan.store') }}" method="POST" class="space-y-4">
                 @csrf
                 <div>
                     <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Nama Kegiatan</label>
-                    <input type="text" name="nama_kegiatan" required placeholder="Contoh: Sorogan Kitab Fathul Qarib"
+                    <input type="text" name="nama_kegiatan" required placeholder="Contoh: Peringatan Maulid Nabi"
                         class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-emerald-600 outline-none">
                 </div>
                 <div>
@@ -107,7 +129,7 @@
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Tanggal</label>
-                    <input type="date" name="tanggal" required
+                    <input type="date" name="tanggal" value="{{ $tanggal }}" required
                         class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-emerald-600 outline-none">
                 </div>
                 <div class="grid grid-cols-2 gap-3">

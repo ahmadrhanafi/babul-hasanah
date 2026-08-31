@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\SantriController as AdminDataSantriController;
 use App\Http\Controllers\Admin\KontenController as AdminKontenController;
 use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
 use App\Http\Controllers\Admin\KegiatanController as AdminKegiatanController;
+use App\Http\Controllers\Admin\JadwalRutinController;
 use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
 use App\Http\Controllers\Admin\GaleriController as AdminGaleriController;
 use App\Http\Controllers\Admin\ImportExcelController as AdminImportExcelController;
@@ -131,6 +132,10 @@ Route::middleware(['auth', \App\Http\Middleware\RoleAdmin::class])->prefix('admi
     Route::post('/kegiatan', [AdminKegiatanController::class, 'store'])->name('kegiatan.store');
     Route::get('/kegiatan/{kegiatan}/absensi', [AdminKegiatanController::class, 'showAbsensi'])->name('kegiatan.absensi');
     Route::post('/kegiatan/{kegiatan}/absensi', [AdminKegiatanController::class, 'storeAbsensi'])->name('kegiatan.absensi.store');
+    // Route Jadwal Rutin
+    Route::get('/jadwal-rutin', [JadwalRutinController::class, 'index'])->name('jadwal-rutin.index');
+    Route::post('/jadwal-rutin', [JadwalRutinController::class, 'store'])->name('jadwal-rutin.store');
+    Route::delete('/jadwal-rutin/{jadwalRutin}', [JadwalRutinController::class, 'destroy'])->name('jadwal-rutin.destroy');
     // Berita
     Route::get('/pengelolaan-berita', [AdminBeritaController::class, 'index'])->name('berita.index');
     // Galeri
