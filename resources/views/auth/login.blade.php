@@ -181,7 +181,7 @@
 
                 <!-- Tombol Google Login (Fixed Ukuran Icon) -->
                 <div>
-                    <a href="#"
+                    <a href="{{ route('auth.google') }}"
                         class="w-full py-3 px-4 bg-white hover:bg-slate-50 border border-slate-200 rounded-2xl text-slate-700 text-xs sm:text-sm font-bold transition duration-200 flex items-center justify-center gap-3 shadow-sm hover:shadow active:scale-[0.99]">
                         <svg class="w-5 h-5 min-w-[20px] shrink-0" viewBox="0 0 24 24">
                             <path fill="#4285F4"

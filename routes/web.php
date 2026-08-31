@@ -14,6 +14,36 @@ use App\Http\Controllers\Admin\ImportExcelController as AdminImportExcelControll
 use App\Http\Controllers\Portal\PortalDashboardController as PortalDashboard;
 use App\Http\Controllers\Public\PendaftaranOnlineController;
 
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
+// ==========================================
+// LOGIN GOOGLE AUTH ROUTES
+// ==========================================
+
+Route::get('/auth/google', function () {
+    return Socialite::driver('google')->redirect();
+})->name('auth.google');
+
+Route::get('/auth/google/callback', function () {
+    try {
+        $googleUser = Socialite::driver('google')->user();
+
+        $user = User::where('email', $googleUser->getEmail())->first();
+
+        if (!$user) {
+            return redirect()->route('login')->withErrors(['email' => 'Email Anda belum terdaftar atau belum diverifikasi oleh admin pesantren.']);
+        }
+
+        Auth::login($user);
+
+        return redirect()->intended('dashboard');
+    } catch (\Exception $e) {
+        return redirect()->route('login')->withErrors(['email' => 'Gagal login dengan Google. Silakan coba lagi.']);
+    }
+});
+
 // ==========================================
 // 1. PUBLIC ROUTES (Halaman Depan & Pendaftaran)
 // ==========================================
