@@ -83,17 +83,25 @@
                     </div>
                 @endif
 
-                <!-- Form Login -->
-                <form class="space-y-4" action="{{ route('login') }}" method="POST">
+                <!-- Form Login dengan State Loading Alpine.js -->
+                <form class="space-y-4" action="{{ route('login') }}" method="POST" x-data="{
+                    loading: false,
+                    startLoading(e) {
+                        e.preventDefault();
+                        this.loading = true;
+                
+                        setTimeout(() => {
+                            e.target.submit();
+                        }, 1500);
+                    }
+                }"
+                    @submit="startLoading($event)">
                     @csrf
 
-                    <!-- Input Email -->
                     <div class="space-y-1.5">
                         <label for="email" class="font-bold text-slate-600 uppercase tracking-wider"
-                            style="font-size: x-small">Alamat
-                            Email</label>
+                            style="font-size: x-small">Alamat Email</label>
                         <div class="relative flex items-center">
-                            <!-- Icon Kiri -->
                             <div
                                 class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-regular fa-envelope text-sm"></i>
@@ -110,22 +118,17 @@
                         @enderror
                     </div>
 
-                    <!-- Input Password -->
                     <div class="space-y-1.5">
                         <div class="flex items-center justify-between">
                             <label for="password" style="font-size: x-small"
-                                class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Kata
-                                Sandi</label>
+                                class="text-[11px] font-bold text-slate-600 uppercase tracking-wider">Kata Sandi</label>
                             @if (Route::has('password.request'))
                                 <a href="{{ route('password.request') }}"
                                     class="text-xs font-bold transition hover:underline"
-                                    style="color: var(--color-pharmaceutical-green);">
-                                    Lupa sandi?
-                                </a>
+                                    style="color: var(--color-pharmaceutical-green);">Lupa sandi?</a>
                             @endif
                         </div>
                         <div class="relative flex items-center">
-                            <!-- Icon Kiri -->
                             <div
                                 class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
                                 <i class="fa-solid fa-lock text-sm"></i>
@@ -133,8 +136,6 @@
                             <input id="password" name="password" type="password" autocomplete="current-password" required
                                 class="w-full pl-11 pr-12 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-slate-900 text-xs sm:text-sm font-medium transition duration-200 focus:outline-none focus:bg-white focus:border-emerald-600 focus:ring-4 focus:ring-emerald-600/10 placeholder:text-slate-400"
                                 placeholder="••••••••" style="padding-left: 38px">
-
-                            <!-- Toggle Eye Icon Kanan -->
                             <button type="button" onclick="togglePassword()"
                                 class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition focus:outline-none"
                                 style="padding-right: 12px">
@@ -148,7 +149,6 @@
                         @enderror
                     </div>
 
-                    <!-- Checkbox Remember Me -->
                     <div class="flex items-center justify-between text-xs pt-1">
                         <label class="flex items-center gap-2.5 cursor-pointer group">
                             <input type="checkbox" name="remember" id="remember"
@@ -158,15 +158,57 @@
                         </label>
                     </div>
 
-                    <!-- Tombol Submit -->
+                    <!-- Tombol Submit dengan Animasi Loading -->
                     <div class="pt-2">
-                        <button type="submit"
-                            class="w-full text-white font-bold py-3.5 rounded-2xl transition-all duration-300 text-sm shadow-lg shadow-emerald-900/10 hover:shadow-emerald-900/20 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 group"
+                        <button type="submit" :disabled="loading"
+                            class="w-full text-white font-bold py-3.5 rounded-2xl transition-all duration-300 text-sm shadow-lg shadow-emerald-900/10 hover:shadow-emerald-900/20 hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 group disabled:opacity-75 disabled:cursor-not-allowed"
                             style="background-color: var(--color-pharmaceutical-green);">
-                            <span>Masuk ke Dashboard</span>
-                            <i
-                                class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition duration-300"></i>
+
+                            <!-- Teks Normal -->
+                            <span x-show="!loading">Masuk ke Dashboard</span>
+
+                            <!-- Teks & Spinner saat Loading -->
+                            <span x-show="loading" class="flex items-center gap-2" style="display: none;">
+                                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10"
+                                        stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                                    </path>
+                                </svg>
+                                Memproses Masuk...
+                            </span>
                         </button>
+                    </div>
+
+                    <!-- Fullscreen Loading Overlay (Muncul Pas Submit Berhasil) -->
+                    <div x-show="loading" style="display: none;"
+                        class="fixed inset-0 z-50 bg-white/90 backdrop-blur-md flex flex-col items-center justify-center transition-all duration-300">
+                        <div class="flex flex-col items-center space-y-4">
+                            <div class="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-900/10 animate-bounce"
+                                style="background-color: var(--color-pharmaceutical-green);">
+                                <img src="{{ asset('/assets/img/logo/logo.png') }}" alt="Logo"
+                                    class="w-10 h-10 object-contain">
+                            </div>
+
+                            <div class="text-center space-y-1">
+                                <h3 class="font-bold text-slate-800 text-sm tracking-wide">Memuat Sesi...</h3>
+                                <p class="text-xs text-slate-400">Mohon tunggu sebentar</p>
+                            </div>
+
+                            <div class="flex items-center gap-1.5 pt-2">
+                                <div class="w-2 h-2 rounded-full dot-sequence"
+                                    style="background-color: var(--color-pharmaceutical-green); animation-delay: 0s;">
+                                </div>
+                                <div class="w-2 h-2 rounded-full dot-sequence"
+                                    style="background-color: var(--color-pharmaceutical-green); animation-delay: 0.3s;">
+                                </div>
+                                <div class="w-2 h-2 rounded-full dot-sequence"
+                                    style="background-color: var(--color-pharmaceutical-green); animation-delay: 0.6s;">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </form>
 

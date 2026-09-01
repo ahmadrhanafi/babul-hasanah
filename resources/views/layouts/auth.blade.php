@@ -33,6 +33,25 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--color-pharmaceutical-green) !important;
         }
+
+        @keyframes sequenceBlink {
+
+            0%,
+            20%,
+            100% {
+                opacity: 0.2;
+                transform: scale(0.8);
+            }
+
+            40% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .dot-sequence {
+            animation: sequenceBlink 0.9s infinite ease-in-out;
+        }
     </style>
 </head>
 
@@ -40,6 +59,8 @@
     <main class="min-h-screen w-full flex flex-col justify-center">
         @yield('content')
     </main>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 
 </html>

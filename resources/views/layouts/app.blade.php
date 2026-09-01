@@ -201,7 +201,7 @@
             <div
                 class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
                 <p>&copy; {{ date('Y') }} Pondok Pesantren Babul Hasanah. All rights reserved.</p>
-                <p class="mt-2 sm:mt-0">Developed with Laravel 13 & Tailwind CSS</p>
+                <p class="mt-2 sm:mt-0"></p>
             </div>
         </div>
     </footer>

@@ -102,12 +102,23 @@
                                 <select name="jenjang_tujuan" required
                                     class="w-full rounded-xl border border-slate-300 px-4 py-3 text-xs focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition outline-none bg-white">
                                     <option value="">-- Pilih Jenjang --</option>
+                                    <option value="MDTA" {{ old('jenjang_tujuan') == 'MDTA' ? 'selected' : '' }}>MDTA
+                                        (Madrasah Diniyah Taklimiyah)</option>
+                                    <option value="PPS WUSTHA"
+                                        {{ old('jenjang_tujuan') == 'PPS WUSTHA' ? 'selected' : '' }}>PPS
+                                        WUSTHA</option>
                                     <option value="MTs" {{ old('jenjang_tujuan') == 'MTs' ? 'selected' : '' }}>MTs
-                                        (Tingkat SLTP)</option>
-                                    <option value="MA" {{ old('jenjang_tujuan') == 'MA' ? 'selected' : '' }}>MA (Tingkat
-                                        SLTA)</option>
-                                    <option value="Diniyah" {{ old('jenjang_tujuan') == 'Diniyah' ? 'selected' : '' }}>
-                                        Madrasah Diniyah</option>
+                                        (Madrasah Tsanawiyah)</option>
+                                    <option value="MAS" {{ old('jenjang_tujuan') == 'MAS' ? 'selected' : '' }}>MAS
+                                        (Madrasah Aliyah Swasta)</option>
+                                    <option value="PDF WUSTHA"
+                                        {{ old('jenjang_tujuan') == 'PDF WUSTHA' ? 'selected' : '' }}>
+                                        PDF WUSTHA (Pendidikan Diniyah Formal Tingkat Menengah)</option>
+                                    <option value="PDF ULYA" {{ old('jenjang_tujuan') == 'PDF ULYA' ? 'selected' : '' }}>
+                                        PDF ULYA (Pendidikan Diniyah Formal Tingkat Atas)</option>
+                                    <option value="Mahad Aly" {{ old('jenjang_tujuan') == 'Mahad Aly' ? 'selected' : '' }}>
+                                        Mahad Aly
+                                    </option>
                                 </select>
                             </div>
 
@@ -116,7 +127,7 @@
                                 <label class="block text-xs font-bold text-slate-700 mb-1.5">Asal Sekolah Sebelumnya</label>
                                 <input type="text" name="asal_sekolah" value="{{ old('asal_sekolah') }}" required
                                     class="w-full rounded-xl border border-slate-300 px-4 py-3 text-xs focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition outline-none"
-                                    placeholder="Contoh: SD Negeri 01 Parung">
+                                    placeholder="Contoh: SD Negeri 01 Padang Lawas">
                             </div>
                         </div>
                     </div>
