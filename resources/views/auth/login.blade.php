@@ -28,7 +28,7 @@
                 <div>
                     <span class="block font-black text-sm tracking-wider uppercase text-white">PP. Babul Hasanah</span>
                     <span class="block text-[11px] font-medium tracking-widest uppercase text-emerald-100/80">Sistem
-                        Informasi Akademik</span>
+                        Informasi Manajemen</span>
                 </div>
             </div>
 
@@ -37,13 +37,14 @@
                 <div
                     class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold backdrop-blur-md border border-white/20 text-emerald-50 bg-white/10 shadow-sm">
                     <i class="fa-solid fa-graduation-cap text-emerald-300"></i>
-                    <span>Portal Akademik Terpadu</span>
+                    <span>Portal Manajemen Terpadu</span>
                 </div>
                 <h1 class="text-4xl xl:text-5xl font-black leading-tight tracking-tight text-white">
-                    Mencetak Generasi Berilmu, Beramal & Berakhlak.
+                    Melahirkan Lulusan yang Menguasai Bidang Kitab Kuning.
                 </h1>
                 <p class="text-sm leading-relaxed font-normal text-emerald-100/90">
-                    Platform manajemen data santri, pengumuman, dan administrasi harian pondok pesantren secara terpadu dan
+                    Sistem manajemen data santri, kegiatan rutinitas, dan administrasi harian pondok pesantren secara
+                    terpadu dan
                     digital.
                 </p>
             </div>
