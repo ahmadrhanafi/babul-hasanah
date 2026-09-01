@@ -5,16 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Pondok Pesantren Babul Hasanah')</title>
-
     <!-- Favicon Website -->
     <link rel="icon" type="image/png" href="{{ asset('assets/img/logo/logo.png') }}">
-
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- Tailwind CSS (via Vite) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,8 +47,7 @@
 
                 <!-- Logo & Brand -->
                 <div class="flex items-center gap-3">
-                    <div
-                        class="w-12 h-12 rounded-xl overflow-hidden bg-emerald-600/10 flex items-center justify-center shadow-xs">
+                    <div class="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center shadow-xs">
                         <img src="{{ asset('assets/img/logo/logo.png') }}" alt="Logo Babul Hasanah"
                             class="w-full h-full object-contain">
                     </div>
