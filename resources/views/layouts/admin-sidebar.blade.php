@@ -35,7 +35,7 @@
                 <i class="fa-solid fa-xmark text-lg"></i>
             </button>
 
-            <!-- Tombol Minimize Desktop (Opsional di Header / Bisa ditaruh di bawah) -->
+            <!-- Tombol Minimize Desktop -->
             <button @click="sidebarMinimize = !sidebarMinimize"
                 class="hidden md:flex text-slate-400 hover:text-white p-2 rounded-xl hover:bg-slate-800 transition items-center justify-center">
                 <i class="fa-solid" :class="sidebarMinimize ? 'fa-angles-right' : 'fa-angles-left'"></i>
@@ -63,7 +63,7 @@
             </a>
 
             <!-- MENU UTAMA -->
-            <div class="pt-3" x-data="{ open: {{ request()->routeIs('admin.pendaftaran.*') || request()->routeIs('admin.santri.*') ? 'true' : 'false' }} }">
+            <div class="pt-3" x-data="{ open: {{ request()->routeIs('admin.pendaftaran.*') || request()->routeIs('admin.santri.*') || request()->routeIs('admin.alumni.*') || request()->routeIs('super.pengguna.*') ? 'true' : 'false' }} }">
                 <button @click="if(!sidebarMinimize) { open = !open } else { sidebarMinimize = false; open = true; }"
                     class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-400 hover:bg-slate-800 transition relative group">
                     <div class="flex items-center gap-3">
@@ -81,7 +81,7 @@
                     </div>
                 </button>
 
-                <!-- Sub-menu Dropdown (Otomatis disembunyikan jika sidebar minimize) -->
+                <!-- Sub-menu Dropdown -->
                 <div x-show="open && !sidebarMinimize" x-collapse
                     class="pl-4 pt-1.5 space-y-1 border-l border-slate-800 ml-4">
                     <a href="{{ route('admin.pendaftaran.index') }}" @click="sidebarOpen = false"
@@ -90,22 +90,27 @@
                         <span>Pendaftaran</span>
                     </a>
                     <a href="{{ route('admin.santri.index') }}" @click="sidebarOpen = false"
-                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl {{ request()->routeIs('admin.santri.*') && !request()->routeIs('admin.pengguna.*') ? 'bg-emerald-600/20 text-emerald-400 font-bold' : 'hover:bg-slate-800 text-slate-400' }} text-xs transition">
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl {{ request()->routeIs('admin.santri.*') ? 'bg-emerald-600/20 text-emerald-400 font-bold' : 'hover:bg-slate-800 text-slate-400' }} text-xs transition">
                         <i class="fa-solid fa-people-group w-4 text-xs flex-shrink-0"></i>
                         <span>Data Santri</span>
                     </a>
+                    <a href="{{ route('admin.alumni.index') }}" @click="sidebarOpen = false"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl {{ request()->routeIs('admin.alumni.*') ? 'bg-emerald-600/20 text-emerald-400 font-bold' : 'hover:bg-slate-800 text-slate-400' }} text-xs transition">
+                        <i class="fa-solid fa-user-graduate w-4 text-xs flex-shrink-0"></i>
+                        <span>Data Alumni</span>
+                    </a>
                     @if (auth()->check() && auth()->user()->role == 'super_admin')
-                        <a href="{{ route('admin.santri.index') }}" @click="sidebarOpen = false"
-                            class="flex items-center gap-3 px-3 py-2.5 rounded-xl {{ request()->routeIs('admin.pengguna.*') ? 'bg-emerald-600/20 text-emerald-400 font-bold' : 'hover:bg-slate-800 text-slate-400' }} text-xs transition">
-                            <i class="fa-solid fa-users w-4 text-xs flex-shrink-0"></i>
-                            <span>Pengguna</span>
+                        <a href="{{ route('super.pengguna.index') }}" @click="sidebarOpen = false"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-xl {{ request()->routeIs('super.pengguna.*') ? 'bg-emerald-600/20 text-emerald-400 font-bold' : 'hover:bg-slate-800 text-slate-400' }} text-xs transition">
+                            <i class="fa-solid fa-users-gear w-4 text-xs flex-shrink-0"></i>
+                            <span>Pengguna Dashboard</span>
                         </a>
                     @endif
                 </div>
             </div>
 
             <!-- MENU PENGELOLAAN -->
-            <div class="pt-2" x-data="{ open: {{ request()->routeIs('admin.konten.*') || request()->routeIs('admin.program.*') || request()->routeIs('admin.berita.*') || request()->routeIs('admin.kegiatan.*') || request()->routeIs('admin.galeri.*') ? 'true' : 'false' }} }">
+            <div class="pt-2" x-data="{ open: {{ request()->routeIs('admin.konten.*') || request()->routeIs('admin.program.*') || request()->routeIs('admin.berita.*') || request()->routeIs('admin.kegiatan.*') || request()->routeIs('admin.galeri.*') || request()->routeIs('admin.prestasi.*') ? 'true' : 'false' }} }">
                 <button @click="if(!sidebarMinimize) { open = !open } else { sidebarMinimize = false; open = true; }"
                     class="w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-slate-400 hover:bg-slate-800 transition relative group">
                     <div class="flex items-center gap-3">
@@ -141,15 +146,21 @@
                         <i class="fa-solid fa-newspaper w-4 text-xs flex-shrink-0"></i>
                         <span>Berita</span>
                     </a>
-                    <a href="{{ route('admin.kegiatan.index') }}" @click="sidebarOpen = false"
-                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl {{ request()->routeIs('admin.kegiatan.*') ? 'bg-emerald-600/20 text-emerald-400 font-bold' : 'hover:bg-slate-800 text-slate-400' }} text-xs transition">
+                    <a href="{{ route('admin.struktur.index') }}" @click="sidebarOpen = false"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl {{ request()->routeIs('admin.struktur.*') ? 'bg-emerald-600/20 text-emerald-400 font-bold' : 'hover:bg-slate-800 text-slate-400' }} text-xs transition">
                         <i class="fa-solid fa-calendar-plus w-4 text-xs flex-shrink-0"></i>
-                        <span>Kegiatan</span>
+                        <span>Struktur Organisasi</span>
                     </a>
+                    
                     <a href="{{ route('admin.galeri.index') }}" @click="sidebarOpen = false"
                         class="flex items-center gap-3 px-3 py-2.5 rounded-xl {{ request()->routeIs('admin.galeri.*') ? 'bg-emerald-600/20 text-emerald-400 font-bold' : 'hover:bg-slate-800 text-slate-400' }} text-xs transition">
                         <i class="fa-solid fa-photo-film w-4 text-xs flex-shrink-0"></i>
                         <span>Galeri</span>
+                    </a>
+                    <a href="{{ route('admin.prestasi.index') }}" @click="sidebarOpen = false"
+                        class="flex items-center gap-3 px-3 py-2.5 rounded-xl {{ request()->routeIs('admin.prestasi.*') ? 'bg-emerald-600/20 text-emerald-400 font-bold' : 'hover:bg-slate-800 text-slate-400' }} text-xs transition">
+                        <i class="fa-solid fa-trophy w-4 text-xs flex-shrink-0"></i>
+                        <span>Prestasi</span>
                     </a>
                 </div>
             </div>
@@ -157,7 +168,7 @@
         </div>
     </div>
 
-    <!-- Bagian Bawah: Tombol Logout & Trigger Collapse Tambahan (Opsional) -->
+    <!-- Bagian Bawah: Tombol Logout -->
     <div class="p-4 border-t border-slate-800 flex items-center justify-between gap-2">
         <button @click="logoutModalOpen = true; sidebarOpen = false;"
             class="flex w-full items-center justify-center md:justify-start gap-3 px-4 py-3 rounded-xl bg-slate-800/50 hover:bg-red-600/20 hover:text-red-400 font-semibold text-xs transition text-slate-400 border border-slate-800 relative group">

@@ -8,79 +8,56 @@ use App\Http\Controllers\Admin\SantriController as AdminDataSantriController;
 use App\Http\Controllers\Admin\KontenController as AdminKontenController;
 use App\Http\Controllers\Admin\ProgramController as AdminProgramController;
 use App\Http\Controllers\Admin\KegiatanController as AdminKegiatanController;
-use App\Http\Controllers\Admin\JadwalRutinController;
 use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
 use App\Http\Controllers\Admin\GaleriController as AdminGaleriController;
-use App\Http\Controllers\Admin\ImportExcelController as AdminImportExcelController;
+use App\Http\Controllers\Admin\PrestasiAdminController;
+use App\Http\Controllers\Admin\AlumniController as AdminAlumniController;
+use App\Http\Controllers\Admin\PenggunaController as AdminPenggunaController;
 use App\Http\Controllers\Portal\PortalDashboardController as PortalDashboard;
 use App\Http\Controllers\Public\PendaftaranOnlineController;
-
-use Laravel\Socialite\Facades\Socialite;
-use Laravel\Socialite\Two\AbstractProvider;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use App\Models\User;
-
-// ==========================================
-// LOGIN GOOGLE AUTH ROUTES
-// ==========================================
-
-Route::get('/auth/google', function () {
-    return Socialite::driver('google')->redirect();
-})->name('auth.google');
-
-Route::get('/auth/google/callback', function () {
-    try {
-        /** @var AbstractProvider $driver */
-        $driver = Socialite::driver('google');
-        $googleUser = $driver->stateless()->user();
-    } catch (\Exception $e) {
-        Log::error('Google Auth Error: ' . $e->getMessage());
-
-        return redirect()->route('login')->withErrors([
-            'email' => 'Gagal terhubung dengan sistem Google. Silakan coba beberapa saat lagi atau gunakan email & password.'
-        ]);
-    }
-
-    $user = User::where('email', $googleUser->getEmail())->first();
-
-    if (!$user) {
-        return redirect()->route('login')->withErrors([
-            'email' => 'Email Anda (' . $googleUser->getEmail() . ') belum terdaftar atau belum diverifikasi oleh admin pesantren.'
-        ]);
-    }
-
-    Auth::login($user);
-
-    return redirect()->intended('dashboard');
-});
+use App\Http\Controllers\Public\PrestasiController;
+use App\Http\Controllers\Public\GaleriController as PublicGaleriController;
+use App\Http\Controllers\Public\BeritaController as PublicBeritaController;
+use App\Http\Controllers\Public\StrukturOrganisasiController;
+use App\Http\Controllers\Admin\StrukturOrganisasiController as AdminStrukturController;
 
 // ==========================================
-// 1. PUBLIC ROUTES (Halaman Web & Form Pendaftaran)
+// 1. PUBLIC ROUTES (Halaman Depan & Pendaftaran)
 // ==========================================
 Route::get('/', function () {
     return view('pages.beranda');
 })->name('home');
 
+// ######## PROFIL ########### //
 Route::get('/profil', function () {
     return view('pages.profil');
 })->name('profil');
 
-Route::get('/program', function () {
-    return view('pages.program');
-})->name('program');
+Route::prefix('profil')->name('profil.')->group(function () {
+    Route::get('/sejarah', fn() => view('pages.sejarah'))->name('sejarah');
+    Route::get('/visi-misi', fn() => view('pages.visi-misi'))->name('visi-misi');
+    Route::get('/struktur-organisasi', [StrukturOrganisasiController::class, 'index'])->name('struktur-organisasi');
+    Route::get('/pembelajaran', fn() => view('pages.pembelajaran'))->name('pembelajaran');
+});
 
-Route::get('/berita', function () {
-    return view('pages.berita');
-})->name('berita.index');
+// ######## JENJANG ########### //
+// Halaman tiap jenjang ada di resources/views/pages/jenjang/{slug}.blade.php
+Route::get('/jenjang/{slug}', fn(string $slug) => view('pages.jenjang.' . $slug))
+    ->whereIn('slug', ['mdta', 'pps-wustha', 'mts', 'ma', 'pdf-wustha', 'pdf-ulya', 'mahad-aly'])
+    ->name('jenjang.show');
 
-Route::get('/galeri', function () {
-    return view('pages.galeri');
-})->name('galeri');
+// ######## BERITA, GALERI, KEGIATAN ########### //
+Route::get('/berita', [PublicBeritaController::class, 'index'])->name('berita.index');
+Route::get('/berita/{berita:slug}', [PublicBeritaController::class, 'show'])->name('berita.show');
+
+Route::get('/galeri', [PublicGaleriController::class, 'index'])->name('galeri');
 
 Route::get('/kegiatan', function () {
     return view('pages.kegiatan');
 })->name('kegiatan');
+
+// ######## PRESTASI SANTRI ########### //
+Route::get('/prestasi', [PrestasiController::class, 'index'])->name('prestasi.index');
 
 // ######## PENDAFTARAN ONLINE ########### //
 Route::get('/pendaftaran', function () {
@@ -102,49 +79,92 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name
 // ==========================================
 // 3. SUPER ADMIN ROUTES (Protected)
 // ==========================================
-Route::middleware(['auth', \App\Http\Middleware\RoleSuperAdmin::class])->prefix('super')->name('super.')->group(function () {
-    Route::get('/pengaturan-sistem', [App\Http\Controllers\Admin\DashboardController::class, 'settings'])->name('settings');
+Route::middleware(['auth', 'role:super_admin'])->prefix('super')->name('super.')->group(function () {
+    Route::get('/pengaturan-sistem', [AdminDashboard::class, 'settings'])->name('settings');
+
+    // Pengguna dashboard (CRUD): super.pengguna.index/create/store/edit/update/destroy
+    Route::resource('pengguna', AdminPenggunaController::class)
+        ->parameters(['pengguna' => 'pengguna'])
+        ->except('show')
+        ->names('pengguna');
 });
 
 // ==========================================
-// 4. ADMIN ROUTES (Protected)
+// 4. ADMIN & PENGASUH ROUTES (Protected)
 // ==========================================
-Route::middleware(['auth', \App\Http\Middleware\RoleAdmin::class])->prefix('admin')->name('admin.')->group(function () {
+// Mengizinkan role 'super_admin', 'admin', dan 'pengasuh' masuk ke area dashboard admin
+Route::middleware(['auth', 'role:super_admin,admin,pengasuh'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
+
     // Pendaftaran
     Route::get('/pendaftaran', [AdminPendaftaranController::class, 'index'])->name('pendaftaran.index');
     Route::patch('/pendaftaran/{id}', [AdminPendaftaranController::class, 'updateStatus'])->name('pendaftaran.update');
+
     // Santri
     Route::get('/santri', [AdminDataSantriController::class, 'index'])->name('santri.index');
-    Route::get('/santri/{id}', [AdminDataSantriController::class, 'detail'])->name('santri.detail');
-    Route::post('/santri/import', [AdminDataSantriController::class, 'import'])->name('santri.import');
     Route::get('/santri/template', [AdminDataSantriController::class, 'downloadTemplate'])->name('santri.template');
+    Route::post('/santri/import', [AdminDataSantriController::class, 'import'])->name('santri.import');
+    Route::get('/santri/{id}', [AdminDataSantriController::class, 'detail'])->name('santri.detail');
+
+    // Alumni (CRUD): admin.alumni.index/create/store/edit/update/destroy
+    Route::resource('data-alumni', AdminAlumniController::class)
+        ->parameters(['data-alumni' => 'alumni'])
+        ->except('show')
+        ->names('alumni');
+
     // Konten
     Route::get('/pengelolaan-konten', [AdminKontenController::class, 'index'])->name('konten.index');
     Route::put('/konten/update', [AdminKontenController::class, 'updateProfil'])->name('konten.update');
+
     // Pengurus
-    Route::post('/pengurus', [App\Http\Controllers\Admin\KontenController::class, 'storeKepengurusan'])->name('pengurus.store');
-    Route::delete('/pengurus/{id}', [App\Http\Controllers\Admin\KontenController::class, 'destroyKepengurusan'])->name('pengurus.destroy');
-    // Konten
+    Route::post('/pengurus', [AdminKontenController::class, 'storeKepengurusan'])->name('pengurus.store');
+    Route::delete('/pengurus/{id}', [AdminKontenController::class, 'destroyKepengurusan'])->name('pengurus.destroy');
+
+    // Pengelolaan lainnya
     Route::get('/pengelolaan-program', [AdminProgramController::class, 'index'])->name('program.index');
-    // Kegiatan
     Route::get('/pengelolaan-kegiatan', [AdminKegiatanController::class, 'index'])->name('kegiatan.index');
-    Route::post('/kegiatan', [AdminKegiatanController::class, 'store'])->name('kegiatan.store');
-    Route::get('/kegiatan/{kegiatan}/absensi', [AdminKegiatanController::class, 'showAbsensi'])->name('kegiatan.absensi');
-    Route::post('/kegiatan/{kegiatan}/absensi', [AdminKegiatanController::class, 'storeAbsensi'])->name('kegiatan.absensi.store');
-    // Route Jadwal Rutin
-    Route::get('/jadwal-rutin', [JadwalRutinController::class, 'index'])->name('jadwal-rutin.index');
-    Route::post('/jadwal-rutin', [JadwalRutinController::class, 'store'])->name('jadwal-rutin.store');
-    Route::delete('/jadwal-rutin/{jadwalRutin}', [JadwalRutinController::class, 'destroy'])->name('jadwal-rutin.destroy');
-    // Berita
-    Route::get('/pengelolaan-berita', [AdminBeritaController::class, 'index'])->name('berita.index');
+
+    // Berita (CRUD)
+    Route::resource('pengelolaan-berita', AdminBeritaController::class)
+        ->parameters(['pengelolaan-berita' => 'berita'])
+        ->except('show')
+        ->names('berita');
+
     // Galeri
-    Route::get('/pengelolaan galeri', [AdminGaleriController::class, 'index'])->name('galeri.index');
+    Route::get('/pengelolaan-galeri', [AdminGaleriController::class, 'index'])->name('galeri.index');
+    Route::get('/pengelolaan-galeri/tambah', [AdminGaleriController::class, 'create'])->name('galeri.create');
+    Route::post('/pengelolaan-galeri', [AdminGaleriController::class, 'store'])->name('galeri.store');
+    Route::delete('/pengelolaan-galeri/{galeri}', [AdminGaleriController::class, 'destroy'])->name('galeri.destroy');
+
+    // Prestasi santri
+    Route::get('/pengelolaan-prestasi', [PrestasiAdminController::class, 'index'])->name('prestasi.index');
+    Route::get('/pengelolaan-prestasi/tambah', [PrestasiAdminController::class, 'create'])->name('prestasi.create');
+    Route::post('/pengelolaan-prestasi', [PrestasiAdminController::class, 'store'])->name('prestasi.store');
+    Route::get('/pengelolaan-prestasi/{prestasi}/edit', [PrestasiAdminController::class, 'edit'])->name('prestasi.edit');
+    Route::put('/pengelolaan-prestasi/{prestasi}', [PrestasiAdminController::class, 'update'])->name('prestasi.update');
+    Route::delete('/pengelolaan-prestasi/{prestasi}', [PrestasiAdminController::class, 'destroy'])->name('prestasi.destroy');
+
+    // Struktur organisasi
+    Route::resource('struktur-organisasi', AdminStrukturController::class)
+        ->parameters(['struktur-organisasi' => 'struktur'])
+        ->except('show')
+        ->names('struktur');
 });
 
 // ==========================================
-// 5. PORTAL WALI SANTRI ROUTES (Protected)
+// 5. PORTAL WALI SANTRI & PEMBINA ROUTES (Protected)
 // ==========================================
-Route::middleware(['auth', \App\Http\Middleware\RoleWaliSantri::class])->prefix('portal')->name('portal.')->group(function () {
+Route::middleware(['auth', 'role:wali_santri'])->prefix('portal')->name('portal.')->group(function () {
     Route::get('/dashboard', [PortalDashboard::class, 'index'])->name('dashboard');
 });
+
+// (Opsional) Jika nanti ada rute khusus pembina asrama
+/*
+Route::middleware(['auth', 'role:pembina'])->prefix('pembina')->name('pembina.')->group(function () {
+    Route::get('/dashboard', [PembinaDashboardController::class, 'index'])->name('dashboard');
+});
+*/
+
+Route::get('/kontak', function () {
+    return view('pages.kontak');
+})->name('kontak');
